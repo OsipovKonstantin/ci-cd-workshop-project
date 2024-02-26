@@ -48,6 +48,9 @@ jobs:
 
       - name: Запуск приложения на порту 8080
         run: mvn spring-boot:run -Dserver.port=8080 &
+        if [ $? -ne 0 ]; then
+        exit 1
+        fi
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
       #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
