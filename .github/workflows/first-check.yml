@@ -38,7 +38,7 @@ jobs:
           export POSTGRES_DB=epa-backend
           export POSTGRES_USER=postgres
           export POSTGRES_PASSWORD=root
-          docker run --name postgres -e POSTGRES_DB=$POSTGRES_DB -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -p 5432:5432 -d postgres:latest
+          docker run --name postgres -e POSTGRES_DB=$POSTGRES_DB -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -p 6541:5432 -d postgres:latest
 
       - name: Ожидание 3 сек инициализации PostgreSQL
         run: sleep 3
@@ -50,7 +50,7 @@ jobs:
         run: |
           mvn spring-boot:run -Dserver.port=8080 &
           app_pid=$!
-          sleep 3
+          sleep 10
           if ps -p $app_pid > /dev/null; then
             exit 0
           else
