@@ -5,7 +5,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     password: iamroot
-    url: jdbc:postgresql:epa-backend
+    url: jdbc:postgresql://localhost:5432/epa-backend
     username: postgres
 
   jpa:
