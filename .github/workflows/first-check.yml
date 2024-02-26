@@ -55,7 +55,7 @@ jobs:
             exit 1;
           else
             echo "Spring Boot application started successfully"
-          fi &
+          fi
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
       #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
