@@ -40,8 +40,8 @@ jobs:
           export POSTGRES_PASSWORD=root
           docker run --name postgres -e POSTGRES_DB=$POSTGRES_DB -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -p 5432:5432 -d postgres:latest
 
-      - name: Ожидание 5 сек инициализации PostgreSQL
-        run: sleep 5
+      - name: Ожидание 3 сек инициализации PostgreSQL
+        run: sleep 3
 
       - name: Сборка проекта и тестирование
         run: mvn clean install
@@ -51,8 +51,11 @@ jobs:
           mvn spring-boot:run -Dserver.port=8080
           status=$?
           if [ $status -ne 0 ]; then
-          echo "Spring Boot application failed to start with status $status";
-          exit 1;
+            echo "Spring Boot application failed to start with status $status";
+            exit 1;
+          fi &
+          else
+            echo "Spring Boot application started successfully"
           fi &
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
