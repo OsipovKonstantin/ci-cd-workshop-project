@@ -63,3 +63,7 @@ jobs:
 
       - name: Остановка приложения
         run: mvn spring-boot:stop
+
+      - name: остановка контейнера с PostgreSQL
+        run: docker stop postgres
+        continue-on-error: true
