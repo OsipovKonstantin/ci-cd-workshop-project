@@ -46,19 +46,19 @@ jobs:
       - name: Сборка проекта и тестирование
         run: mvn clean install
 
-      - name: Запуск приложения на порту 8080
+      - name: Запуск и проверка работы Spring Boot приложения на порту 8080
         run: |
-          mvn spring-boot:run -Dserver.port=8080 &
+          mvn spring-boot:run -Dserver.port=8080
           status=$?
           if [ $status -ne 0 ]; then
           echo "Spring Boot application failed to start with status $status";
           exit 1;
-          fi
+          fi &
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
       #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
 
-      - name: Остановка приложения
+      - name: Остановка Spring Boot
         run: mvn spring-boot:stop
 
       - name: остановка контейнера с PostgreSQL
