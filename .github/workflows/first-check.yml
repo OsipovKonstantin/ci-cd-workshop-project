@@ -35,10 +35,9 @@ jobs:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         run: |
-          export POSTGRES_DB=$(grep "url: jdbc:postgresql:://localhost:5432/" application.yml | cut -d'/' -f4)
-          export POSTGRES_USER=$(grep "username:" application.yml | awk '{print $2}')
-          export POSTGRES_PASSWORD=$(grep "password:" application.yml | awk '{print $2}')
-          docker exec -it postgres psql -U $POSTGRES_USER -d postgres -c "CREATE DATABASE epa-backend
+          export POSTGRES_DB=epa-backend
+          export POSTGRES_USER=postgres
+          export POSTGRES_PASSWORD=root
           docker run --name postgres -e POSTGRES_DB=$POSTGRES_DB -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -p 5432:5432 -d postgres:latest
 
       - name: Ожидание 30 сек инициализации PostgreSQL
