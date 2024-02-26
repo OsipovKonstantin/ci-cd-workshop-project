@@ -52,8 +52,11 @@ jobs:
 
       - name: Проверка статуса Spring Boot приложения
         run: |
-          status=$? if [ $status -ne 0 ]; 
-          then echo "Spring Boot application failed to start with status $status"; exit 1; fi
+          status=$?
+          if [ $status -ne 0 ]; then
+          echo "Spring Boot application failed to start with status $status";
+          exit 1;
+          fi
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
       #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
