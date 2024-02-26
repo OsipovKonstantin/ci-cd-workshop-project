@@ -54,7 +54,8 @@ jobs:
             echo "Spring Boot application failed to start with status $status";
             exit 1;
           else
-            echo "Spring Boot application started successfully"
+            echo "Spring Boot application started successfully";
+            exit 0;
           fi
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
