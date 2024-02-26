@@ -50,18 +50,18 @@ jobs:
         run: |
           mvn spring-boot:run -Dserver.port=8080 &
           app_pid=$!
-          sleep 5
+          sleep 3
           if ps -p $app_pid > /dev/null; then
             exit 0
           else
             exit 1
           fi
 
+      #- name: Проход Postman тестов с baseUrl http://localhost:8080
+      #  run: npx newman run ./postman/epa-backend.json --env-var baseUrl=http://localhost:8080
+
       - name: Остановка Spring Boot
         run: mvn spring-boot:stop
-
-      #- name: Проход Postman тестов с baseUrl http://localhost:8080
-      #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
 
       - name: остановка контейнера с PostgreSQL
         run: docker stop postgres
