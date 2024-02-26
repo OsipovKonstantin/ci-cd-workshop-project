@@ -7,9 +7,9 @@ on:
     - main
     - dev
 
-# Работа, которая будет выполняться: сборка (build) и тестирование проекта. Будут запущены на виртуальной машине linux (ubuntu)
+# Работа, которая будет выполняться на виртуальной машине linux (ubuntu)
 jobs:
-  build-and-testing:
+  build-and-checkstyle-and-testing:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +21,33 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
           cache: maven
+
+      - name: Проверка стилистики (checkstyle)
+        run: mvn checkstyle:check -Dcheckstyle.config.location=./checkstyle.xml
+
+      - name: считывание файла application.properties
+        run: |
+          cat src/main/resources/application.yml >> application.yml
+
+      - name: Запуск postgreSQL через докер-контейнер
+        env:
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        run: |
+          export POSTGRES_DB=$(grep "url: jdbc:postgresql:" application.yml | cut -d'/' -f4')
+          export POSTGRES_USER=$(grep "username:" application.yml | awk '{print $2}')
+          export POSTGRES_PASSWORD=$(grep "password:" application.yml | awk '{print $2}'')
+          docker run --name postgres -e POSTGRES_DB=$POSTGRES_DB -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -p 6541:5432 -d postgres:latest
+
       - name: Сборка проекта и тестирование
         run: mvn clean install
+
+      - name: Запуск приложения на порту 8080
+        run: mvn spring-boot:run -Dserver.port=8080 &
+
+      #- name: Проход Postman тестов с baseUrl http://localhost:8080
+      #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
+
+      - name: Остановка приложения
+        run: mvn spring-boot:stop
