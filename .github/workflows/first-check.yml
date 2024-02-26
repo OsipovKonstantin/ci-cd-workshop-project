@@ -49,15 +49,11 @@ jobs:
       - name: Запуск и проверка работы Spring Boot приложения на порту 8080
         run: |
           mvn spring-boot:run -Dserver.port=8080
-          app_pid=$!
-          sleep 10
-          if ps -p $app_pid > /dev/null; then
-            echo "Spring Boot application started successfully"
-            pkill -P $app_pid  # Завершаем процесс Spring Boot
-          else
-            echo "Spring Boot application failed to start"
-            exit 1
-          fi
+          status=$?
+          if [ $status -ne 0 ]; then
+            echo "Spring Boot application failed to start with status $status";
+            exit 1;
+          & fi
 
       #- name: Проход Postman тестов с baseUrl http://localhost:8080
       #  run: npx newman run ./postman/filmorate.json --env-var baseUrl=http://localhost:8080
