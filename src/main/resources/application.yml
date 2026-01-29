@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     password: admin
     url: jdbc:postgresql:epa-backend
-    username: postgres
+    username: admin
 
   jpa:
     hibernate:
